@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+  <head>
+    <title>connect 4</title>
+  </head>
+
+  <body>
+    <form action="">
+      <input id="m" autocomplete="off"/>
+      <button>Send</button>
+    </form>
+    <ul id="messages"></ul>
+    <div id="grid"/>
+    </br>
+    <div id="winner"/>
+    <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io()
+      $('form').submit(function() {
+        socket.emit('move', $('#m').val())
+        $('#m').val('')
+        return false
+      })
+
+      socket.on('move', function(move) {
+        $('#messages').append($('<li>').text(move))   
+      })
+      socket.on('grid', function(grid) {
+        $('#grid').html(gridHTML(grid))
+      })
+
+      socket.on('winner', function(winner) {
+        alert(winner + ' won!')
+        location = ''
+      })
+
+      function gridHTML(grid) {
+        var html = "<br/><table border='1'>"
+        html += "<tr>"
+        html += "</tr>"
+        for(i=6; i>=0; i--) {
+          html += "<tr>"
+          for(j=0; j<7; j++) {
+            html += "<td style='min-width:100px;min-height:100px'>" + grid[j][i] + "</td>"
+          }
+          html += "</tr>"
+        }
+        for(i=0; i<7; i++) {
+            html += "<td style='min-width:100px'>" + i + "</td>"
+        }
+        html += "</table>"
+        return html
+      }
+    </script>
+
+  </body>
+</html>
