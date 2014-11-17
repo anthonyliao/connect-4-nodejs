@@ -6,6 +6,8 @@ var gamers = {}
 var games = {}
 var waiting = true
 
+app.set('port', (process.env.PORT || 5000))
+
 app.get('/', function(req, res) {
   console.log("/ requested")
   //res.send("Hello World")
@@ -190,7 +192,7 @@ function gameGrid() {
   return gameGrid
 }
 
-http.listen(5000, function() {
-  console.log("app started. listening on *:5000")
+http.listen(app.get('port'), function() {
+  console.log("app started. listening on *:" + app.get('port'))
 })
 
